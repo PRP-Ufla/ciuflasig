@@ -1,0 +1,13 @@
+<?php
+	$DEFAULT_ADDRESS = 'http://www.prp.ufla.br/editais/';
+
+	$MAIL_PARAM['host'] = 'fado.ufla.br';
+	$MAIL_PARAM['port'] = 25;
+	$MAIL_PARAM['auth'] = false;
+	$MAIL_PARAM['username'] = '';
+	$MAIL_PARAM['password'] = '';
+	
+	$MAIL_HEADERS['From'] = 'CIUFLA <prp@prp.ufla.br>';
+	$MAIL_HEADERS['To'] = 'prp@prp.ufla.br';
+	$MAIL_HEADERS['Subject'] = 'CIUFLA';
+?>

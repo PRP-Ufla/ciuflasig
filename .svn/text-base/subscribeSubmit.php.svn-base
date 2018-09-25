@@ -1,0 +1,75 @@
+<?php
+	include("static/basicheaders.php");
+	include("php/class_database.php");
+	include("cfg/config_course_state.php");
+	include("cfg/config_mail.php");
+	if (!isset($_POST['eid']))
+		die("Requisicao Invalida!");
+	$eid = $_POST['eid'];
+	$db = new Database();
+	$sql = "SELECT * FROM eventos WHERE id='".$eid."';";
+	$res = $db->consulta($sql);
+	if (count($res) == 0)
+		die("Evento Invalido!");
+	$tit = $res[0]['edicao']." CIUFLA";
+	$sql = "SELECT * FROM usuarios WHERE ".
+		"id='".$eid."' AND ".
+		"email='".$_POST['email']."';";
+	$res = $db->consulta($sql);
+	if (count($res) > 0)
+		die("E-mail de usuario ja cadastrado!");
+
+	$sql = "SELECT * FROM cursos WHERE ".
+		"id='".$_POST['curso']."';";
+	$res = $db->consulta($sql);
+	if (count($res) == 0)
+		die("Nenhum curso obtido.");
+	$dados = $res[0];
+	$curso = $dados['sigla']." - ".$dados['nome'];
+	$sql = "INSERT INTO usuarios (id,eventos_id,nome,email,senha,".
+		"matricula,telefone,instituicao,cursos_id,curso) ".
+		"VALUES (NULL,".
+		"'".$eid."',".
+		"'".$_POST['nome']."',".
+		"'".$_POST['email']."',".
+		"'".sha1($_POST['senha'])."',".
+		"'".$_POST['mat']."',".
+		"'(".$_POST['ddd'].") ".$_POST['tel']."',".
+		"'".$_POST['inst']."',".
+		"'".$_POST['curso']."',".
+		"'".$curso."');";
+	if (!$db->executar($sql))
+		die("SQL Invalido!<br />".$sql);
+	$msg = "Prezado(a) ".$_POST['nome'].",\n".
+		"Sua inscrição no ".$tit." foi realizada com sucesso, para ".
+		"submeter resumos, acesse o sistema de gestão utilizando os ".
+		"seguintes dados:\n\n".
+		"E-mail: ".$_POST['email']."\n".
+		"Senha: ".$_POST['senha']."\n\n".
+		"Atenciosamente,\nPró-Reitoria de Pesquisa\n";
+	$reply = mail($_POST['email'], "Bem vindo ao ".$tit."!",
+		$msg, $MAIL_HEADERS['From']);
+	if (!$reply)
+	{
+		echo "<b><big>Erro ao enviar pela funcao mail()!</big></b>";
+	}
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta name="author" content="Renato R. R. de Oliveira e Vitor A. R. Andrade">
+	<meta http-equiv="refresh"	content="5.0; url=./" />
+	<?php include("static/stylesheets.php"); ?>
+	<title>CIUFLA - Inscrever-se</title>
+	<script src="js/subscribe.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="centraliza">
+<?php include("htm/top.html"); ?>
+<?php include("htm/menu_main.html"); ?>
+<div id="conteudo">
+    <center><h3>Usu&aacute;rio cadastrado com sucesso!<br />
+		Aguarde...</h3></center>
+</div>
+</body>
+</html>

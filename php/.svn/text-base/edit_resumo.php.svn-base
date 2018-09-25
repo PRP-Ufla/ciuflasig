@@ -1,0 +1,34 @@
+<?php
+	@include("./static/basicheaders.php");
+	@include("../static/basicheaders.php");
+	@include("./static/lock_user.php");
+	@include("../static/lock_user.php");
+	@include("./php/class_database.php");
+	@include("../php/class_database.php");
+	if ((!isset($_SESSION['eid'])) ||
+		(!isset($_GET['id'])) )
+			die("<alert>Requisicao Invalida!");
+	$db = new Database();
+	$id = $_GET['id'];
+	$sql = "SELECT * FROM resumos WHERE id='".$id."';";
+	$res = $db->consulta($sql);
+	if (count($res) == 0)
+		die("<alert>Resumo Invalido!");
+	$data = $res[0];
+	$sql = "SELECT * FROM usuarios WHERE ".
+		"eventos_id='".$_SESSION['eid']."' AND ".
+		"email='".$_SESSION['email']."';";
+	$res = $db->consulta($sql);
+	if (count($res) == 0)
+		die("<alert>Usuario Invalido!");
+	$user = $res[0];
+	if ($data['usuarios_id'] != $user['id'])
+		die("<alert>Posse invalida de resumo!");
+	$sql = "SELECT * FROM cursos WHERE id='".
+		$data['cursos_id']."';";
+	$res = $db->consulta($sql);
+	$curso = $res[0];
+	$area = $curso['sigla']." - ".$curso['nome'];
+	
+	die("<b><i>N&atilde;o dispon&iacute;vel ainda.</i></b>");
+?>

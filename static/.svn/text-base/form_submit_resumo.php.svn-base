@@ -1,0 +1,101 @@
+<?php
+	@include("./static/basicheaders.php");
+	@include("../static/basicheaders.php");
+	@include("./static/lock_user.php");
+	@include("../static/lock_user.php");
+	@include("./php/class_database.php");
+	@include("../php/class_database.php");
+	@include("./cfg/config_course_state.php");
+	@include("../cfg/config_course_state.php");
+	$db = new Database();
+	$sql = "SELECT * FROM usuarios WHERE ".
+		"eventos_id='".$_SESSION['eid']."' AND ".
+		"email='".$_SESSION['email']."';";
+	$res = $db->consulta($sql);
+	if (count($res) == 0)
+		die("<alert>Requisicao Invalida!");
+	$user = $res[0];
+	$sql = "SELECT * FROM cursos;";
+	$cursos = $db->consulta($sql);
+	if (count($cursos) == 0)
+		die("<alert>Nao ha areas cadastradas!");
+	
+	echo "<h2>Submeter Resumo</h2><br />";
+	echo "<form action='addresumo.php' method='post' ".
+		"onSubmit='return checkFields();'>";
+	echo "<h3>Dados do resumo:</h3>";
+	echo "<table border=0>";
+	echo "<tr><td>T&iacute;tulo do Resumo*:</td>".
+		"<td><input type='text' name='titulo' id='titulo' ".
+		"size=40 /></td></tr>";
+	echo "<tr><td>Palavras-Chave*:</td>".
+		"<td><input type='text' name='pal1' id='pal1' ".
+		"size=10 /> ; <input type='text' name='pal2' id='pal2' ".
+		"size=10 /> ; <input type='text' name='pal3' id='pal3' ".
+		"size=10 /></td></tr>";
+	echo "<tr><td>Institui&ccedil;&atilde;o de Fomento:</td>".
+		"<td><input type='text' name='fomento' id='fomento' ".
+		"size=30 /></td></tr>";
+	echo "<tr><td>&Aacute;rea do Resumo*:</td><td><select ".
+		"name='area' id='area'><option value='0' selected>".
+		"-- Selecione uma &Aacute;rea --</option>";
+	foreach ($cursos as $i => $row) {
+		if ($row['state'] == $ATIVO) {
+			echo "<option value='".$row['id'].
+				"'>".$row['nome']." (".$row['sigla'].
+				")</option>\n";
+		}
+	}
+	echo "</select></td></tr>";
+	echo "<tr><td>Resumo*:</td><td><br />".
+		"<span id='nChars'>0 Caracteres</span> (Max. 2500)<br />".
+		"<textarea name='resumo' id='resumo' cols=50 rows=15".
+		" onKeyUp='checkChars();' maxlength='2500'>".
+		"</textarea></td>";
+	echo "</table><br />";
+	echo "<h3>Dados dos autores:</h3>";
+	echo "<table border=0>";
+	echo "<tr><th>Nomes Completos</th><th></th></tr>";
+	echo "<tr><td>1<sup>o</sup> Autor*:</td><td>".
+		"<input type='hidden' name='autor1' value='".
+		$user['nome']."' />".$user['nome']."</td></tr>";
+	echo "<tr><td>2<sup>o</sup> Autor:</td><td>".
+		"<input type='text' name='autor2' id='autor2'".
+		" size=35 /></td></tr>";
+	echo "<tr><td>3<sup>o</sup> Autor:</td><td>".
+		"<input type='text' name='autor3' id='autor3'".
+		" size=35 /></td></tr>";
+	echo "<tr><td>4<sup>o</sup> Autor:</td><td>".
+		"<input type='text' name='autor4' id='autor4'".
+		" size=35 /></td></tr>";
+	echo "<tr><td>5<sup>o</sup> Autor:</td><td>".
+		"<input type='text' name='autor5' id='autor5'".
+		" size=35 /></td></tr>";
+	echo "<tr><td>6<sup>o</sup> Autor:</td><td>".
+		"<input type='text' name='autor6' id='autor6'".
+		" size=35 /></td></tr>";
+	echo "<tr><th><br />Informa&ccedil;&otilde;es dos".
+		" Autores</th><th></th></tr>";
+	echo "<tr><td>Informa&ccedil;&otilde;es do 1<sup>o</sup>".
+		" Autor*:</td><td><textarea name='infoautor1' id='infoautor1'".
+		" cols=40 rows=2></textarea></td></tr>";
+	echo "<tr><td>Informa&ccedil;&otilde;es do 2<sup>o</sup>".
+		" Autor:</td><td><textarea name='infoautor2' id='infoautor2'".
+		" cols=40 rows=2></textarea></td></tr>";
+	echo "<tr><td>Informa&ccedil;&otilde;es do 3<sup>o</sup>".
+		" Autor:</td><td><textarea name='infoautor3' id='infoautor3'".
+		" cols=40 rows=2></textarea></td></tr>";
+	echo "<tr><td>Informa&ccedil;&otilde;es do 4<sup>o</sup>".
+		" Autor:</td><td><textarea name='infoautor4' id='infoautor4'".
+		" cols=40 rows=2></textarea></td></tr>";
+	echo "<tr><td>Informa&ccedil;&otilde;es do 5<sup>o</sup>".
+		" Autor:</td><td><textarea name='infoautor5' id='infoautor5'".
+		" cols=40 rows=2></textarea></td></tr>";
+	echo "<tr><td>Informa&ccedil;&otilde;es do 6<sup>o</sup>".
+		" Autor:</td><td><textarea name='infoautor6' id='infoautor6'".
+		" cols=40 rows=2></textarea></td></tr>";
+	echo "</table><br /><br />";
+	echo "<input type='submit' value='Submeter' />\n";
+	echo "<input type='reset' value='Limpar Campos' />";
+	echo "<br /></form><br />";
+?>

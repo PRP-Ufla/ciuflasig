@@ -1,0 +1,68 @@
+<?php
+	@include("./static/basicheaders.php");
+	@include("../static/basicheaders.php");
+	@include("./static/lock_user.php");
+	@include("../static/lock_user.php");
+	@include("./php/class_database.php");
+	@include("../php/class_database.php");
+	if ((!isset($_GET['eid'])) ||
+		(!isset($_GET['uid'])))
+			die("<alert>Requisicao Invalida!");
+	$eid = $_GET['eid'];
+	$uid = $_GET['uid'];
+	$db = new Database();
+	$sql = "SELECT * FROM usuarios WHERE id='".$uid."';";
+	$res = $db->consulta($sql);
+	if (count($res) == 0)
+		die("<alert>Usuario Invalido!");
+	$user = $res[0];
+	if ($user['email'] != $_SESSION['email'])
+		die("<alert>Requisicao Invalida!");
+	$sql = "SELECT * FROM eventos WHERE id='".$eid."';";
+	$res = $db->consulta($sql);
+	if (count($res) == 0)
+		die("<alert>Evento Invalido!");
+	$evento = $res[0];
+	$term = @mktime($evento['termino_submissao']);
+	
+	$sql = "SELECT * FROM resumos WHERE ".
+		"eventos_id='".$_SESSION['eid']."' AND ".
+		"usuarios_id='".$_GET['uid']."' ORDER BY id,titulo;";
+	$res = $db->consulta($sql);
+	if (count($res) == 0) {
+		echo "<i>Nenhum resumo submetido ainda.</i><br />";
+	} else {
+		foreach ($res as $i => $row)
+		{
+			echo "<span id='res".$i."'>";
+			echo "<b>ID:</b> ".$row['id']."-".$row['eventos_id'].
+				"-".$row['usuarios_id']." &nbsp;&nbsp;&nbsp;&nbsp; ".
+				"&bull; <b>".$row['fomento']."</b> &bull; ";
+			echo "<span style='float: right; color: #248;'>";
+			echo "<span style='cursor: pointer;' ".
+				"onClick='openResumo(".$row['id'].");'>".
+				"Abrir</span>";
+			if ($term > time()) {
+				echo " | <span style='cursor: pointer;' ".
+					"onClick='editResumo(".$row['id'].");'>".
+					"Editar</span>";
+				echo " | <span style='cursor: pointer;' ".
+					"onClick='deleteResumo(".$row['id'].");'>".
+					"Deletar</span>";
+			}
+			echo "</span><br />";
+			echo "<b>T&iacute;tulo:</b> ".$row['titulo']."<br />";
+			echo "<b>Palavras-Chave:</b> ".$row['palavras_chave'];
+			echo "<hr /></span><br /><br />";
+		}
+	}
+	$nResumos = $evento['resumos']-count($res);
+	if ($nResumos == 0)
+		echo "<br /><b><center>".
+			"Voc&ecirc; n&atilde;o pode submeter mais nenhum resumo.".
+			"</center></b><br />";
+	else
+		echo "<br /><b><center>".
+			"Voc&ecirc; ainda pode submeter mais ".$nResumos.
+			" resumos.</center></b><br />";
+?>

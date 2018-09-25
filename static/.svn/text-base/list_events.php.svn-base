@@ -1,0 +1,42 @@
+<?php
+	@include("./php/class_database.php");
+	@include("../php/class_database.php");
+	$db = new Database();
+	$today = @gmdate("Y-m-d");
+	$sql = "SELECT * FROM eventos WHERE ".
+		"inicio_submissao <= '".$today."' AND ".
+		"termino >= '".$today."' ".
+		"ORDER BY inicio ASC,inicio_submissao ASC;";
+	$result = $db->consulta($sql);
+	if (count($result) == 0) {
+		echo "<center><big><i>Nenhum congresso aberto no".
+			" momento.</i></big></center>";
+	} else {
+		foreach ($result as $i => $row)
+		{
+			echo "<div style='display: block; width: 400px; ".
+				"border: 2px solid #248; margin: 15px; ".
+				"padding: 15px; text-align: left; color: #aaf;".
+				"background: #142;'>";
+			echo "<center><h2 style='color: #fff;'>".$row['edicao'].
+				" CIUFLA</h2></center>";
+			echo "Per&iacute;odo: ".
+				@gmdate("d/m/Y",@strtotime($row['inicio']))." a ".
+				@gmdate("d/m/Y",@strtotime($row['termino']))."<br />";
+			echo "Submiss&atilde;o de Resumos: ".
+				@gmdate("d/m/Y",@strtotime($row['inicio_submissao'])).
+				" a ".
+				@gmdate("d/m/Y",@strtotime($row['termino_submissao'])).
+				"<br />";
+			echo "<center><p style='color: #afa;'>".
+				$row['descricao']."</p><br />";
+			echo "<a style='color: #fff; font-weight: bold;'".
+				" href='subscribe.php?id=".$row['id'].
+				"' target='_self'>Inscrever-se</a> | ";
+			echo "<a style='color: #fff; font-weight: bold;'".
+				" href='loginuser.php?id=".$row['id'].
+				"' target='_self'>Submeter Resumos</a>";
+			echo "</center></div>";
+		}
+	}
+?>

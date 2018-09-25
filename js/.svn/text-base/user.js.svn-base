@@ -1,0 +1,149 @@
+// Encoding: ISO-8859-1
+var script = document.createElement('script');
+script.src = 'js/bibliotecaAjax.js';
+script.type = 'text/javascript';
+script.defer = true;
+script.id = 'scriptID';
+// Insert the created object to the html head element
+var head = document.getElementsByTagName('head').item(0);
+head.appendChild(script);
+
+var last;
+
+window.onload = function() {
+	last = "m1";
+	resumo();
+}
+
+function refreshContents(novo) {
+	try {
+		document.getElementById(last).style.backgroundColor = "";
+		document.getElementById(novo).style.backgroundColor = "#ddd";
+		last = novo;
+	} catch (err) {
+		alert(err.description);
+	}
+}
+
+function resumo() {
+	var url;
+	try {
+		url = "php/list_resumos.php?eid="+
+			document.getElementById("eid").value+
+			"&uid="+document.getElementById("uid").value;
+	} catch (err) {
+		alert("Nao foi possivel obter EID e UID!");
+	}
+	try {
+		document.getElementById("contentbar").innerHTML = "";
+	} catch (err) {
+		alert("Falha em obter container \"contentbar\"!"+
+			err.description);
+	}
+	requisicaoHTTP( "GET", url, true );
+	refreshContents("m1");
+}
+
+function submit() {
+	var url = "static/form_submit_resumo.php";
+	try {
+		document.getElementById("contentbar").innerHTML = "";
+	} catch (err) {
+		alert("Falha em obter container \"contentbar\"!"+
+			err.description);
+	}
+	requisicaoHTTP( "GET", url, true );
+	refreshContents("m2");
+}
+
+function details() {
+	try {
+		document.getElementById("contentbar").innerHTML = "";
+	} catch (err) {
+		alert("Falha em obter container \"contentbar\"!"+
+			err.description);
+	}
+	refreshContents("m3");
+}
+
+function openResumo(id) {
+	var url = "php/details_resumo.php?id="+id;
+	requisicaoHTTP( "GET", url, true );
+}
+
+function editResumo(id) {
+	var url = "php/edit_resumo.php?id="+id;
+	requisicaoHTTP( "GET", url, true );
+}
+
+function deleteResumo(id) {
+	if (confirm("Tem certeza de que deseja deletar o resumo?")) {
+		var url = "php/delete_resumo.php?id="+id;
+		requisicaoHTTP( "GET", url, true );
+	}
+}
+
+function trataDados(){
+	var data = ajax.responseText;
+	if (data.substr(0,7) == "<alert>") {	
+		alert(data.replace("<alert>", ""));
+		return;
+	} else if (data.substr(0,9) == "<deleted>") {
+		resumo();
+		return;
+	} else {
+		try {
+			document.getElementById("contentbar").innerHTML = data;
+		} catch (err) {
+			alert("Falha em obter container \"contentbar\"!"+
+				err.description);
+		}
+	}
+}
+
+function checkChars() {
+	try {
+		var txt = document.getElementById("resumo").value;
+		document.getElementById("nChars").innerHTML = txt.length+
+			" Caracteres";
+	} catch (err) {
+		alert("Impossivel obter elementos para checar caracteres.");
+	}
+}
+
+function checkFields() {
+	var msg = "";
+	//alert("Came here...");
+	try {
+		if (document.getElementById("titulo").value == "") {
+			msg = msg + "* Titulo\n";
+		}
+		if (document.getElementById("pal1").value == "") {
+			msg = msg + "* 1a Palavra-Chave\n";
+		}
+		if (document.getElementById("pal2").value == "") {
+			msg = msg + "* 2a Palavra-Chave\n";
+		}
+		if (document.getElementById("pal3").value == "") {
+			msg = msg + "* 3a Palavra-Chave\n";
+		}
+		if (document.getElementById("area").value == "0") {
+			msg = msg + "* Area do Resumo\n";
+		}
+		if (document.getElementById("resumo").value.length < 100) {
+			msg = msg + "* Resumo\n";
+		}
+		if (document.getElementById("infoautor1").value == "") {
+			msg = msg + "* Informacoes do 1o Autor\n";
+		}
+	} catch (err) {
+		msg = msg+"Nao foi possivel realizar a validacao dos campos!";
+	}
+	
+	if (msg != "") {
+		alert("Os seguintes campos sao obrigatorios:\n"+msg);
+		return false;
+	} else {
+		return true;
+	}
+}

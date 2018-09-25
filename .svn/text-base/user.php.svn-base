@@ -1,0 +1,73 @@
+<?php
+	include("static/basicheaders.php");
+	include("static/lock_user.php");
+	include("php/class_database.php");
+	if (!isset($_SESSION['eid']))
+		die("Requisicao Invalida!");
+	$eid = $_SESSION['eid'];
+	$db = new Database();
+	$sql = "SELECT * FROM eventos WHERE id='".$eid."';";
+	$res = $db->consulta($sql);
+	if (count($res) == 0)
+		die("Evento Invalido!");
+	$dados = $res[0];
+	$ciufla = $dados['edicao']." CIUFLA";
+	$sql = "SELECT * FROM usuarios WHERE eventos_id='".$eid."' AND ".
+		"email='".$_SESSION['email']."';";
+	$res = $db->consulta($sql);
+	if (count($res) == 0)
+		die("Usuario Invalido!");
+	$user = $res[0];
+	$uid = $user['id'];
+	$sql = "SELECT * FROM resumos WHERE ".
+		"eventos_id='".$eid."' AND ".
+		"usuarios_id='".$uid."';";
+	$res = $db->consulta($sql);
+	$resumos = $dados['resumos']-count($res);
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta name="author" content="Renato R. R. de Oliveira e Vitor A. R. Andrade">
+	<?php include("static/stylesheets.php"); ?>
+	<title>CIUFLA - Submiss&atilde;o de Resumos</title>
+	<style type="text/css"><!--
+		#mn1{ color: #6bf; }
+	!--></style>
+	<script src="js/user.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="centraliza">
+<?php include("htm/top.html"); ?>
+<?php include("static/menu_user.php"); ?>
+<div id="conteudo">
+	<input type="hidden" id="eid" value="<?php echo $eid; ?>" />
+	<input type="hidden" id="uid" value="<?php echo $uid; ?>" />
+    <center>
+    <h1>Resumos</h1>
+    <h3>Bem vindo ao <?php echo $ciufla; ?>!</h3>
+    <p>Cada usu&aacute;rio poder&aacute; submeter no m&aacute;ximo
+		<?php echo $dados['resumos']; ?> resumos.</p>
+	<br /><span id="loadBar" name="loadBar"></span><br />
+    <table class="managecontainer">
+    <tr>
+		<td class="sidebar">
+			<button class="sidebar" id="m1" onClick="resumo();">
+				Resumos</button>
+			<button class="sidebar" id="m2" onClick="submit()" <?php
+				if ($resumos <= 0)
+					echo " disabled ";
+			?>>
+				Submeter Resumo</button>
+			<button class="sidebar" id="m3" onClick="details()">
+				Detalhes</button>
+		</td>
+		<td class="managecontent"><span id="contentbar"></span></td>
+    </tr>
+    </table><br /><br />
+    </center>
+</div>
+<?php include("htm/bottom.html"); ?>
+</body>
+</html>
+  

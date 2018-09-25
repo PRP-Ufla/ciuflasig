@@ -1,0 +1,47 @@
+
+function checkFields() {
+	var msg = "";
+	try {
+		if (document.getElementById("nome").value == "") {
+			msg = msg + "* Nome\n";
+		}
+		
+		if (document.getElementById("email").value == "") {
+			msg = msg + "* E-mail\n";
+		}
+		
+		if (document.getElementById("senha").value == "") {
+			msg = msg + "* Senha\n";
+		}
+		if (document.getElementById("senha2").value == "") {
+			msg = msg + "* Confirmar Senha\n";
+		}
+		
+		if (document.getElementById("mat").value == "") {
+			msg = msg + "* Matr&iacute;cula\n";
+		}
+		
+		if (document.getElementById("ddd").value == "") {
+			msg = msg + "* Telefone (DDD)\n";
+		}
+		if (document.getElementById("tel").value == "") {
+			msg = msg + "* Telefone\n";
+		}
+		
+		if (document.getElementById("inst").value == "") {
+			msg = msg + "* Institui&ccedil;&atilde;o\n";
+		}
+		
+		if (document.getElementById("curso").value == "0") {
+			msg = msg + "* Curso\n";
+		}
+	} catch (err) {
+	}
+	
+	if (msg != "") {
+		alert("Os seguintes campos s&atilde;o obrigat&oacute;rios:\n"+
+			msg);
+		return false;
+	} else
+		return true;
+}

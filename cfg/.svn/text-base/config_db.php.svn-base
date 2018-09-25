@@ -1,0 +1,11 @@
+<?php
+	class DBCONFIG {
+		//protected $host = "xaxado.ufla.br";
+		protected $host = "localhost";
+		protected $nome = "ciufla";
+		//protected $usuario = "admin_prpeditais";
+		protected $usuario = "root";
+		//protected $senha = "BdDct1730";
+		protected $senha = "336prp938";
+	}
+?>
