@@ -657,3 +657,27 @@ function Check(){
 function reseta(){
 	document.getElementById("idResumo").value = "";
 }
+
+function usuarios(eid){
+	var url = "php/atualizar_senhaUsuarios.php?id="+eid;
+	requisicaoHTTP( "GET", url, true );
+	refreshContents("m14");
+}
+
+function vertificaSenha(eid){
+	var usuId = document.getElementById("usu-id").value;
+	var senha1 = document.getElementById("nova-senha").value;
+	var senha2 = document.getElementById("nova-senha2").value;
+	
+	if(usuId == '0') alert("Escolha um usuário válido!");
+	else if(senha1 == "" && senha2 == "" ) alert("Digite uma nova senha!");
+	else if(senha1 != senha2) alert("Senhas diferentes!");
+	else{
+		$.post('php/atualizaSenha.php', {usuId : usuId, senha1 : senha1}, function(resposta){
+			document.getElementById("nova-senha").value = "";
+			document.getElementById("nova-senha2").value = "";
+			alert(resposta);
+		});
+		// evento(eid);
+	} 
+}

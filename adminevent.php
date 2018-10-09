@@ -45,8 +45,8 @@
     <tr>
 		<td class="sidebar">
 			<input type="hidden" id="eid" value="<?php echo $eid;?>" />
-			<button class="sidebar" id="m1" onClick="evento(<?php
-				echo $eid; ?>);">
+			<button class="sidebar" id="m1" onClick="evento('<?php
+				echo $eid; ?>');">
 				Dados do Evento</button>
 			<button class="sidebar" id="m2" onClick="edit(<?php
 				echo $eid; ?>)">
@@ -80,6 +80,9 @@
 			<button class="sidebar" id="m8" onClick="gerarCertificados(<?php
 				echo $eid; ?>)">
 				Gerar Certificados</button>
+			<button class="sidebar" id="m14" onClick="usuarios(<?php
+				echo $eid; ?>);">
+				Editar Senhas</button>
 			<button class="sidebar" id="m9" onClick="parent.open('./avaliadores')">
 				Sistema de Avaliação de Sessão</button>
 			<button class="sidebar" id="m10" onClick="parent.open('./avaliaresumo')">
