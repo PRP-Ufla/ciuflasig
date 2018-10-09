@@ -10,11 +10,33 @@ $(function(){
 		} else {
 			$('#table-vagas').show();
 			$.each(vagas, function(index, vaga) {
-				var $tr = $("<tr />");
+
+				if(vaga.total === null){
+					vaga.total = 0;
+				}
+				var $tr = $("<tr />"),
+					media;
+
+				vaga.total = parseInt(vaga.total) + parseInt(vaga.disponiveis);
+
+				media = vaga.resumos / vaga.total;
+
+				//Função para arredondar para duas casas, somente numeros com casas decimais
+				var m = media+"",
+
+					decimal = m.indexOf(".");
+
+				if(decimal !== -1){
+					media = media.toFixed(2);
+				}
+
 				$tr.attr("vaga-id", vaga.id);
 				$tr.append("<td>"+vaga.sessao_id+"</td>");
 				$tr.append("<td>"+vaga.cursoNome+"</td>");
 				$tr.append("<td>"+vaga.horario+"</td>");
+				$tr.append("<td>"+vaga.resumos+"</td>");
+				$tr.append("<td>"+media+"</td>");
+				$tr.append("<td>"+vaga.total+"</td>");
 				$tr.append("<td><input type='text' id='disponiveis' value='"+vaga.disponiveis+"'/></td>");
 				$tr.append("<td><input type='button' id='atualizar-disponiveis' value='Atualizar'/></td>");
 				$tr.append("<td><img height='25' width='25' class='remover-vaga' src='img/delete.png' title='Remover Vaga'></td>");

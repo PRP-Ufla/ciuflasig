@@ -54,7 +54,9 @@ $(function(){
 		} else if(this.id === "page-inserir-vaga") {
 			carregarPagina("html/inserir_vaga.html");
 		} else if(this.id === "page-listar-vagas") {
-			carregarPagina("html/listar_vagas.html");	
+			carregarPagina("html/listar_vagas.html");
+		} else if(this.id === "criar-vagas") {
+			carregarPagina("html/criar_vagas.html");	
 		} else if(this.id === "page-listar-resumos") {
 			carregarPagina("html/listar_resumo.html");
 		} else if(this.id === "distribui-resumos") {
