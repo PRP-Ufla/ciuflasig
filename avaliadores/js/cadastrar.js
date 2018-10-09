@@ -2,12 +2,29 @@ $(function(){
 
 	$('#principal #conteudo').off('click', '#cadastrar');
 
+	// Função para escolher o departamento através de um select
+	
+	$.post("php/preencherSelectDepartamento.php", function(departamentos){
+		departamentos = JSON.parse(departamentos);
+		var $option = $("<option />");
+		$("#departamento").append($option);
+		$.each(departamentos, function(index, departamento){
+			$option = $("<option />");
+			$option.attr("value", departamento.id);
+			$option.append(departamento.nome);
+			$("#departamento").append($option);
+		});
+		
+	});
+
+	// FIM
+
 	$('#principal #conteudo').on('click', '#cadastrar', function(){
 		var nome = $('#nome').val(),
 			email = $('#email').val(),
 			senha = $('#senha').val(),
 			senha2 = $('#senha2').val(),
-			departamento = $('#departamento').val(),
+			departamento = $("#departamento").val(),
 			telefone = $('#telefone').val()
 			cpf = $('#cpf').val();
 
@@ -72,6 +89,10 @@ $(function(){
 						$('#telefone').val("");
 						$('#cpf').val("");
 						alert("Avaliador cadastrado com sucesso!");
+						
+						//Essa funcão pode ser apagada, apenas direciona pra pagina de login do usuario
+						$("#principal #conteudo").load("index.html");
+
 						return true;
 					} else {
 						alert("Ja existe um avaliador com este e-mail!");
