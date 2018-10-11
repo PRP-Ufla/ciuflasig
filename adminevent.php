@@ -82,7 +82,7 @@
 				Gerar Certificados</button>
 			<button class="sidebar" id="m14" onClick="usuarios(<?php
 				echo $eid; ?>);">
-				Editar Senhas</button>
+				Alterar Senhas e E-mail's</button>
 			<button class="sidebar" id="m9" onClick="parent.open('./avaliadores')">
 				Sistema de Avaliação de Sessão</button>
 			<button class="sidebar" id="m10" onClick="parent.open('./avaliaresumo')">

@@ -21,36 +21,54 @@
     <script src="js/adminevent.js" type="text/javascript"></script>
     <!-- <form action="php/validaNovaSenha.php" method="post"
 		onSubmit="teste()"> -->
-    <center><h3>Atualizar senha dos usuários</h3></center>
+    <center><h2>Atualizar dados dos usuários</h2></center>
 </head>
 <body>
 <form>
-    <table border=0>
+    <table border=0 align="center">
+    <tr><td colspan="2" align="center" height="30"><h3>Selecione o Usuário</h3></td></tr>
     <tr>
-    <td>Selecione o Usuário</td>
-        <td><select name="nomeUsuario" id="usu-id">
+        <td colspan="2" height="40"><select name="nomeUsuario" id="usu-id">
         <option value="0" id="usu0" selected></option>
         <?php
             foreach ($usuarios as $i => $row) {
                 echo "<option id=\"usu".$row['id']."\" value='".$row['id'].
-                "'>".$row['nome']."
+                "'>".$row['nome']." -> ".$row['email']."
                 </option>\n";
             }
         ?>
         </select></td>
     </tr>
+
+    <!---Edição de email-->
     <tr>
-        <td>Nova Senha</td>
+        <td width="100">Novo E-mail</td>
+        <td><input type="text" name="email" id="novo-email" /></td>
+    </tr>
+    <tr>
+        <td width="100">Confirme o E-mail</td>
+        <td><input type="text" name="email2" id="novo-email2" /></td>
+    </tr>
+        <tr><td colspan="2" height="30">
+            <center><input type="button" name="save-email" value="Atualizar Email" 
+                    onClick="verificaEmail(<?php echo $eid; ?>)"/>
+            </center>
+    </td></tr>
+
+    <!---Edição de senha-->
+    <tr>
+        <td width="100">Nova Senha</td>
         <td><input type="password" name="nova-senha" id="nova-senha" /></td>
     </tr>
     <tr>
-        <td>Confirme a Senha</td>
+        <td width="100">Confirme a Senha</td>
         <td><input type="password" name="nova-senha2" id="nova-senha2" /></td>
     </tr>
+        <tr><td colspan="2" height="30">
+            <center><input type="button" name="save-senha" value="Atualizar Senha" 
+                    onClick="verificaSenha(<?php echo $eid; ?>)"/>
+            </center></td></tr>
     </table><br />
-    <center><input type="button" value="Atualizar" 
-    onClick="vertificaSenha(<?php echo $eid; ?>)"/></center>
-    
 </form>
 </body>
 </html>

@@ -35,6 +35,5 @@
 			ORDER BY c.nome ";
 
 	$cursos = $db->executarConsulta($sql);
-	
 	echo json_encode($cursos);
 ?>

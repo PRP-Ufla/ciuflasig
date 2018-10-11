@@ -664,7 +664,25 @@ function usuarios(eid){
 	refreshContents("m14");
 }
 
-function vertificaSenha(eid){
+function verificaEmail(eid){
+	var usuId = document.getElementById("usu-id").value;
+	var novoEmail1 = document.getElementById("novo-email").value;
+	var novoEmail2 = document.getElementById("novo-email2").value;
+	
+	if(usuId == '0') alert("Escolha um usuário válido!");
+	else if(novoEmail1 == "" && novoEmail2 == "" ) alert("Digite um novo e-mail!");
+	else if(novoEmail1 != novoEmail2) alert("E-mail's diferentes!");
+	else{
+		$.post('php/atualizaDados.php', {usuId : usuId, novoEmail1 : novoEmail1}, function(resposta){
+			document.getElementById("novo-email").value = "";
+			document.getElementById("novo-email2").value = "";
+			alert(resposta);
+			usuarios(eid);
+		});
+	} 
+}
+
+function verificaSenha(eid){
 	var usuId = document.getElementById("usu-id").value;
 	var senha1 = document.getElementById("nova-senha").value;
 	var senha2 = document.getElementById("nova-senha2").value;
@@ -673,11 +691,11 @@ function vertificaSenha(eid){
 	else if(senha1 == "" && senha2 == "" ) alert("Digite uma nova senha!");
 	else if(senha1 != senha2) alert("Senhas diferentes!");
 	else{
-		$.post('php/atualizaSenha.php', {usuId : usuId, senha1 : senha1}, function(resposta){
+		$.post('php/atualizaDados.php', {usuId : usuId, senha1 : senha1}, function(resposta){
 			document.getElementById("nova-senha").value = "";
 			document.getElementById("nova-senha2").value = "";
 			alert(resposta);
+			usuarios(eid);
 		});
-		// evento(eid);
 	} 
 }
