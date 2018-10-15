@@ -44,7 +44,8 @@
 							GROUP BY v.curso_id, v.sessao_id) ava 
 						ON (ava.curso_id = v.curso_id AND ava.sessao_id = v.sessao_id)
 
-						WHERE v.evento_id = "'.$evento_id.'"';
+						WHERE v.evento_id = "'.$evento_id.'"
+						ORDER BY v.evento_id, v.sessao_id, c.nome';
 
 	$vagas = $db->executarConsulta($procurarVagasSQL);
 
