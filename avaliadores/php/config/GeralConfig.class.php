@@ -14,8 +14,14 @@
 			require_once 'db/DBUtils.class.php';
 			$db = new DBUtils();
 
-			$eid = $db -> getIdEvento();
-			return $eid;
+			$sql = 'SELECT eventos.id AS id
+					FROM eventos
+					WHERE CURDATE() > eventos.termino_submissao AND 
+					CURDATE() < eventos.termino;';
+			
+			$eventos = $db -> executarConsulta($sql);
+
+			return $eventos[0][0];
 		}
 		//FIM
 

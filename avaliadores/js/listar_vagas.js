@@ -30,6 +30,11 @@ $(function(){
 					media = media.toFixed(2);
 				}
 
+				if(media === Infinity){
+					//Possível que está mensagem tenha de ser alterada
+					media = "Sem vagas disponibilizadas";
+				}
+
 				$tr.attr("vaga-id", vaga.id);
 				$tr.append("<td>"+vaga.sessao_id+"</td>");
 				$tr.append("<td>"+vaga.cursoNome+"</td>");
