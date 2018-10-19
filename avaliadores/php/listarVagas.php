@@ -13,10 +13,11 @@
 	require_once 'config/GeralConfig.class.php';
 	require_once 'db/DBUtils.class.php';
 	$db = new DBUtils();
+	$ordenar = $_POST['ordenar'];
 
 	$evento_id = GeralConfig::getEventoId();
 
-	$procurarVagasSQL = 'SELECT v.id, v.sessao_id, c.nome AS cursoNome, s.horario, v.disponiveis, ava.total AS total, aux.resumos
+	$procurarVagasSQL = 'SELECT v.id, v.sessao_id AS sessao_id, c.nome AS cursoNome, s.horario, v.disponiveis AS disponiveis, ava.total AS total, aux.resumos AS resumos
 						FROM vaga v
 
 						INNER JOIN cursos c
@@ -45,7 +46,7 @@
 						ON (ava.curso_id = v.curso_id AND ava.sessao_id = v.sessao_id)
 
 						WHERE v.evento_id = "'.$evento_id.'"
-						ORDER BY v.evento_id, v.sessao_id, c.nome';
+						ORDER BY '.$ordenar.', cursoNome';
 
 	$vagas = $db->executarConsulta($procurarVagasSQL);
 

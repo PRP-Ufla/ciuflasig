@@ -2,7 +2,7 @@ $(function(){
 	
 	$("#principal #conteudo").off("click", "#acessar");
 
-	$("#principal #conteudo").on("click", "#acessar", function(){
+	function autencia(){
 		var email = $("#email").val(),
 		senha = $("#senha").val();
 		$.post("php/autenticarUsuario.php", { email : email, senha : senha }, function(resposta){
@@ -42,6 +42,16 @@ $(function(){
 				alert("Usuário e/ou senhas incorretos.");
 			}
 		});
+	}
+
+	$("#principal #conteudo").on("click", "#acessar", function(){
+		autencia();
+	});
+
+	$("#principal #conteudo").keypress(function(e){
+		if(e.wich === 13 || e.keyCode === 13){
+			autencia();
+		}
 	});
 
 	$("#principal #conteudo").off("click","#recup-senha");

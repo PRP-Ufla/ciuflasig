@@ -1,6 +1,20 @@
 <script type="text/javascript" src="js/listar_vagas.js"></script>
 
-<h2>Vagas:</h2>
+<h1>Vagas</h1>
+
+<h3>Ordenar por:</h3>
+<p id="msg"> Selecione uma opção para que a tabela seja ordenada pela mesma</p>
+<div class="formCampos5">
+	<select id="ordenar">
+		<option value="cursoNome">Curso</option>
+		<option value="disponiveis">Disponíveis</option>
+		<option value="resumos">Resumos</option>
+		<option value="sessao_id">Sessão</option>
+		<!---<option value="total">Total de Vagas</option>--->
+	</select>
+	<br/>
+	<input type='submit' id='ordenar-tab' value='Ordenar'/><br>
+</div>
 
 <table id="table-vagas" class="table table-bordered invisivel">
 	<thead>
