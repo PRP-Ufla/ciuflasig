@@ -4,8 +4,8 @@ $(function(){
 	$("#principal #conteudo").off("click", "#atualizar-disponiveis");
 	$("#principal #conteudo").off("click", "#ordenar-tab");
 	
-	function carregar(ordenar){
-		$.post('php/listarVagas.php', {ordenar : ordenar}, function(vagas){
+	function carregar(ordenar, ordem){
+		$.post('php/listarVagas.php', {ordenar : ordenar, ordem : ordem}, function(vagas){
 			vagas = JSON.parse(vagas);
 			if(vagas == null) {
 				$('#principal #conteudo').append('<b>Não existe nenhuma vaga cadastrada.</b>');
@@ -53,12 +53,15 @@ $(function(){
 		});
 	}
 	
-	function exibePag(ordenar){
+	function exibePag(ordenar, ordem){
 		$("#principal #conteudo").load("html/listar_vagas.html", function(){
 			$('#ordenar option[value='+ ordenar +']').attr('selected','selected');
+			if(ordem === "DESC"){
+				$("#switch-shadow").attr('checked', 'true');
+			}
 			$('#msg').hide();
 		});
-		carregar(ordenar);
+		carregar(ordenar, ordem);
 	}
 
 	$("#principal #conteudo").on("click", ".remover-vaga", function(){
@@ -67,7 +70,16 @@ $(function(){
 			$.post("php/removerVaga.php", {vagaId : vagaId}, function() {
 				alert("Vaga excluída com sucesso!");
 				//$("#principal #conteudo").load("html/listar_vagas.html");
-				exibePag($("#ordenar").val());
+				var ordenar = $("#ordenar").val(),
+				ord = $("#switch-shadow").is(':checked');;
+				if(ord === false){
+					ordenar = $("#ordenar").val();
+					exibePag(ordenar, "ASC");
+				}
+				else{
+					ordenar = $("#ordenar").val();
+					exibePag(ordenar, "DESC");
+				}
 			});
 		}
 	});
@@ -78,13 +90,29 @@ $(function(){
 		$.post("php/atualizarDisponiveis.php", {vagaId : vagaId, disponiveis : disponiveis}, function() {
 			alert("Vaga atualizada com sucesso!");
 			//$("#principal #conteudo").load("html/listar_vagas.html");
-			exibePag($("#ordenar").val());
+			var ordenar = $("#ordenar").val(),
+			ord = $("#switch-shadow").is(':checked');;
+			if(ord === false){
+				ordenar = $("#ordenar").val();
+				exibePag(ordenar, "ASC");
+			}
+			else{
+				ordenar = $("#ordenar").val();
+				exibePag(ordenar, "DESC");
+			}
 		});
 	});
 
 	$("#principal #conteudo").on("click", "#ordenar-tab", function(){
-		ordenar = $("#ordenar").val();
-		exibePag(ordenar);
+		var ordenar = $("#ordenar").val(),
+		ord = $("#switch-shadow").is(':checked');;
+		if(ord === false){
+			ordenar = $("#ordenar").val();
+			exibePag(ordenar, "ASC");
+		}
+		else{
+			ordenar = $("#ordenar").val();
+			exibePag(ordenar, "DESC");
+		}
 	});
-
 });

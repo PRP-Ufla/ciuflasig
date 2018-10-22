@@ -14,6 +14,8 @@
 	require_once 'db/DBUtils.class.php';
 	$db = new DBUtils();
 	$ordenar = $_POST['ordenar'];
+	//Ordem -> ASC or DESC
+	$ordem = $_POST['ordem'];
 
 	$evento_id = GeralConfig::getEventoId();
 
@@ -46,7 +48,7 @@
 						ON (ava.curso_id = v.curso_id AND ava.sessao_id = v.sessao_id)
 
 						WHERE v.evento_id = "'.$evento_id.'"
-						ORDER BY '.$ordenar.', cursoNome';
+						ORDER BY '.$ordenar.' '.$ordem.', cursoNome';
 
 	$vagas = $db->executarConsulta($procurarVagasSQL);
 

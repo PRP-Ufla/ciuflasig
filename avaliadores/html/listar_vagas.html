@@ -3,17 +3,21 @@
 <h1>Vagas</h1>
 
 <h3>Ordenar por:</h3>
-<p id="msg"> Selecione uma opção para que a tabela seja ordenada pela mesma</p>
+<p id="msg"> Selecione uma opção de ordenação para exibir a tabela</p>
 <div class="formCampos5">
 	<select id="ordenar">
 		<option value="cursoNome">Curso</option>
 		<option value="disponiveis">Disponíveis</option>
 		<option value="resumos">Resumos</option>
-		<option value="sessao_id">Sessão</option>
+		<option value="sessao_id" selected>Sessão</option>
 		<!---<option value="total">Total de Vagas</option>--->
 	</select>
 	<br/>
-	<input type='submit' id='ordenar-tab' value='Ordenar'/><br>
+	<div class="switch__container">
+		<input type="checkbox" id="switch-shadow" class="switch switch--shadow" type="checkbox">
+	  	<label for="switch-shadow"></label>
+		<input type='submit' id='ordenar-tab' value='Ordenar'/><br>
+	</div>
 </div>
 
 <table id="table-vagas" class="table table-bordered invisivel">
